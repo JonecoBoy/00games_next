@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model User {
+//   id    String  @id @default(auto()) @map("_id") @db.ObjectId
+//   name  String?
+//   email String
+// }
+
+model System {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  generation  Int?
+  release     String
+  developer   String
+  slug        String   @unique
+  description String?
+  logo        String?
+  image       String?
+  gamesRel    Game[]   @relation(fields: [games], references: [id])
+  games       String[] @db.ObjectId
+
+  @@map("systems")
+}
+
+model Game {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  generation     Int?
+  release        String
+  developer      String
+  slug           String     @unique
+  description    String?
+  logo           String?
+  image          String?    @db.ObjectId
+  screenshots    String[]   @db.ObjectId
+  categoriesRel  Category[] @relation(fields: [categories], references: [id])
+  categories     String[]   @db.ObjectId
+  systemsRel     System[]   @relation(fields: [systems], references: [id])
+  systems        String[]   @db.ObjectId
+  imageRel       File?      @relation("image", fields: [image], references: [id])
+  screenshotsRel File?      @relation("screenshots", fields: [screenshots], references: [id])
+
+  @@map("games")
+}
+
+model Category {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  short_name String?
+  slug       String   @unique
+  gamesRel   Game[]   @relation(fields: [games], references: [id])
+  games      String[] @db.ObjectId
+
+  @@map("categories")
+}
+
+model File {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  hash            String
+  url             String
+  height          Int
+  width           Int
+  Game            Game[] @relation("image")
+  GameScreenShots Game[] @relation("screenshots")
+
+  @@map("upload_file")
+}
