@@ -4,7 +4,7 @@ import Card from "../../src/components/card";
 import Image from "next/image";
 import Layout from "../../src/layout/Layout";
 import Link from "next/link";
-import { FamilyRestroom, SportsEsports, Star, Undo } from "@mui/icons-material";
+import { Cancel, CheckCircle, FamilyRestroom, SportsEsports, Star, Undo } from "@mui/icons-material";
 import { Alert } from "@mui/material";
 import { apolloClient, gql } from "../../src/apolloClient";
 import YouTube from "react-youtube";
@@ -16,10 +16,12 @@ export default function GamePage({game}:{game:any}){
     const {name,slug,id,developer,release,description,logo,image,systems,players,categories,online,videoId,screenshots} = game
     const descriptionFirstLetter=(description as String).substring(0,1)
     const restDescription = (description as String).substring(1,(description as String).length)
+    const aspectRatio = logo.width/logo.height;
+    
     return(
       <>
       {logo?
-        <div className="game-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={logo.width} height={logo.height} alt={game.name}></Image></div>
+        <div className="game-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={750} height={750/aspectRatio} alt={game.name}></Image></div>
       :<h1>{name}</h1>
     }
         <div className="technical">
@@ -36,10 +38,10 @@ export default function GamePage({game}:{game:any}){
             }
 
           </p>
-          <p>Mode: {Array.from({length:players},()=>{
+          <p>Players: {Array.from({length:players},()=>{
                     return <SportsEsports fontSize="large"/>
                   })}</p>
-          <p>Online: {online}</p>
+          <p>Online: {online ? <CheckCircle fontSize="large"/> : <Cancel fontSize="large"/>}</p>
           <p>Rate: 5</p>
   
           </div>
@@ -100,6 +102,10 @@ export default function GamePage({game}:{game:any}){
         text-align:center;
         img{max-width:720px;}
       }
+
+      .game-screenshots>*:not(:first-child){
+        margin-left:10px;
+       }
       .drop-cap {
           position: relative;
           display: block;
@@ -143,45 +149,49 @@ export default function GamePage({game}:{game:any}){
           margin-bottom: 15px;
           display: inline-block;
             }
-            p{
-              margin-bottom:10px;
-            }
-  
-            .text{
-              margin-left:1em;
-              vertical-align: middle;
-              border: 4px solid #C4DBF6;
-              align-self:center;
-            }
-            .technical p{
-              font-size:2.5em;
-              
+
+          h3:not(:first-child) {
+              margin-top: 20px;
+          }
+          p{
+            margin-bottom:10px;
+          }
+
+          .text{
+            margin-left:1em;
+            vertical-align: middle;
+            border: 4px solid #C4DBF6;
+            align-self:center;
+          }
+          .technical p{
+            font-size:2.5em;
             
-            }
+          
+          }
+
+          .technical{
+            
+            display:flex;
+            flex-direction:row;
+            justify-content:center;
+            flex-wrap:wrap;
+            height:100%;
   
-            .technical{
-              
-              display:flex;
-              flex-direction:row;
-              justify-content:center;
-              flex-wrap:wrap;
-              height:100%;
-    
-              border-bottom: 4px solid #C4DBF6;
-              padding:20px;
-              
-            }
-  
-            .review{
-              margin-top:1em;
-              display:grid;
-              flex-direction:row;
-              justify-content:flex-start;
-              flex-wrap:wrap;
-              padding:20px;
-              min-width:600px;;
-              
-            }
+            border-bottom: 4px solid #C4DBF6;
+            padding:20px;
+            
+          }
+
+          .review{
+            margin-top:1em;
+            display:grid;
+            flex-direction:row;
+            justify-content:flex-start;
+            flex-wrap:wrap;
+            padding:20px;
+            min-width:600px;;
+            
+          }
             
           `}
       </style>

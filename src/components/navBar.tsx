@@ -12,29 +12,65 @@ import { Collapse, Divider} from '@mui/material';
 
 import {ExpandMore,ExpandLess} from '@mui/icons-material';
 import Link from 'next/link';
+import { apolloClient, gql } from '../apolloClient';
+import { GetStaticProps } from 'next';
+import axios from 'axios';
+
+
 
 export default function NavBar() {
+  const [systems,setSystems] = React.useState([])
 
-  let newOpen =[];
-//   const data = useStaticQuery(graphql`
-//   query systemsQuery {
-//     allJson(sort: {fields: generation}) {
-//       group(field: generation) {
-//         nodes {
-//       type
-//       name
-//       developer
-//       generation
-//       fields {
-//               slug
-//             }
-//     }
-//     fieldValue
-//     totalCount
-//   }
-//     }
-//   }
-// `)
+  // React.useEffect(()=>{
+  //   const fetchData = async()=>{
+  //     // const result = await axios.get('http://joneco.dev.br:1337/systems');
+  //     const result = await apolloClient.query({
+  //       query:gql`
+  //         query{
+  //           systemsConnection{
+              
+  //             groupBy{
+  //               generation{
+  //                 key
+  //                 connection{
+  //                   values{
+  //                     name
+  //                     slug
+  //                     developer
+  //                     generation
+  //                   }
+  //                   aggregate{
+  //                     count
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       `
+  //     })
+      
+  //     const systemsRaw = result.data.systemsConnection.groupBy.generation
+
+  //     const systemsGroups=systemsRaw.map((item)=>{
+  //       return {generation:item.key,count:item.connection.aggregate.count,
+  //               systems:item.connection.values
+            
+  //       }
+        
+  //   })
+
+  //     setSystems(systemsGroups)
+  //   }
+  //   fetchData()
+  //  },[])
+
+
+
+
+    
+  
+// por num prebuild pra puxar de la e montar um .json 
 
 const systemsGroups = [
   {generation:4, systems:[
@@ -139,6 +175,7 @@ const [open, setOpen] = React.useState(
                 <Collapse key={`colapse-${index}`} in={open[index]}>
                   {item.systems.map(
                     (system:any,index:number)=>{
+                      console.log(index)
                     return (
                       <MenuItem key={index} onClick={handleClose}><Link className='menuItem' href = {`/systems/${system.slug}`}>{`${system.developer} ${system.name} `}</Link></MenuItem>
                     )
@@ -188,3 +225,4 @@ const [open, setOpen] = React.useState(
   );
  
 }
+

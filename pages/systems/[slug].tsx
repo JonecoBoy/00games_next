@@ -55,7 +55,7 @@ export default function SystemPage({system,games}:{system:any,games:Array<any>})
 
 
     {logo?
-      <div className="system-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={350} height={250} alt={name}></Image></div>
+      <div className="system-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={logo.width} height={logo.height} alt={name}></Image></div>
       : null
     }    
     
@@ -252,6 +252,7 @@ const systemSlugs= result.data.systems
 
 // puxa as infos para jogar nas props da pagina
 export const getStaticProps:GetStaticProps<SystemPageProps,SystemQuery> = async({params})=>{
+  
     const result = await apolloClient.query({
       query:gql`
         query {
@@ -270,6 +271,8 @@ export const getStaticProps:GetStaticProps<SystemPageProps,SystemQuery> = async(
         logo{
           name
           url
+          width
+          height
         }
       }
       games(where:{systems:{slug:"${params?.slug}"}}){
@@ -309,3 +312,4 @@ export const getStaticProps:GetStaticProps<SystemPageProps,SystemQuery> = async(
         props:{system,games}
     }
 }
+
