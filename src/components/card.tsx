@@ -9,46 +9,45 @@ import { Url } from "url";
 
 export type cardParams={
 name:string;
-img: string;
 slug: string;
-releaseDate:number;
+release:number;
 developer:string;
 generation:number;
 // fields:any;
-type:string;
+type?:string;
+__typename:string;
 rate?:number;
 totalCount?:number;
 genre?:string;
+players?:number;
 screenshots?:Array<string>;
 logo?:string;
 video?:string;
 image?:any;
+categories?:Array<string>;
+
 };
 
 
 const Card = ({cardParams}:{cardParams:cardParams})=>{
     const totalStars:number = 5;
-    const {name,releaseDate,developer,generation,rate,slug,genre,type,totalCount,image} = cardParams;
+    const {name,release,developer,generation,rate,slug,genre,type,totalCount,image,categories,players,__typename} = cardParams;
 
-    let imagePath = ``;
-
-    console.log(imagePath);
-    let path = ``
-    if(type==='System'){
-        path = `/systems/${slug}`
-        imagePath = `http://localhost:1337${cardParams.image.url}`
-    }else if(type==='Game'){
-        path = `/games/${slug}`
-        imagePath = `http://localhost:1337${cardParams.imageRel?.url}`
-    }
+    const slugPath: string = __typename +'/'+ slug
     
+
     const imageWidth = 400;
 return (
     
-    <Link className="card" href={`/systems/${slug}`}>
+    <Link className="card" href={slugPath.toLowerCase()}>
         
         <h2 className="title">{name}</h2>
-            <img src={imagePath} height={250} width={300}></img>
+            
+            {image ?
+            <Image src={`http://joneco.dev.br:1337${image.url}`}  width={1500} height={350} alt={'image.name'}></Image>
+            :null}
+            
+            
         <div className="info">
         {type==='System'?
             <div className="infoBox">
@@ -58,21 +57,37 @@ return (
         {generation?
             <div className="infoBox">
                     <p>Gen: </p>
-                    <p>{generation}</p>
+                    <p>{generation}th Generation</p>
             </div>:null}
             {developer?
             <div className="infoBox">
                     <p>Developer: </p>
                     <p>{developer}</p>
             </div>:null}
-            {releaseDate?<div className="infoBox">
+            {release?<div className="infoBox">
                 <p>Release Date: </p>
-                <p>{releaseDate}</p>
+                <p>{release}</p>
             </div>:null}
             
             {genre?<div className="infoBox">
                 <p>genre: </p>
                 <p>{genre}</p>
+            </div>:null}
+
+            {players?<div className="infoBox">
+                <p>Players: </p>
+                <p>{genre}</p>
+            </div>:null}
+
+
+            {categories?<div className="infoBox">
+                {/* TODO adicionar link para clicar na categoria e filtrar */}
+                <p>Categories: </p>
+                <p>
+                    {categories.map((category:any)=>{
+                        return (category.name + ', ')
+                    })}
+                </p>
             </div>:null}
             
             {rate?<div className="infoBox">
@@ -113,7 +128,7 @@ return (
                     margin: auto;
                     margin-top: 20px;
                     display: block;
-                    max-width:90%;
+                    max-width:95%;
                 }
 
                 a.card:hover {
@@ -130,7 +145,7 @@ return (
                 }
                 
                 img{
-                    max-width:250px;
+                    max-width:350px;
                     margin:10px;
                     box-sizing: border-box;
                     justify-content:center;

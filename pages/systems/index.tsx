@@ -1,12 +1,13 @@
 import * as React from "react"
 import Card from "../../src/components/card"
 import { cardParams } from "../../src/components/card"
-import type {GetServerSideProps} from "next";
-import axios from "axios";
+import type { GetStaticPaths,GetStaticProps } from "next";
+import { apolloClient, gql } from "../../src/apolloClient";
+
 
 export type SystemInfoProps={
   name:string;
-  img:string;
+  image:string;
   slug:string;
   developer:string;
   generation:string;
@@ -22,17 +23,6 @@ export type SystemsProps={
 
 const Systems = ({systems}:SystemsProps) => {
 
-
-// systems.forEach((system:SystemInfoProps)=>{
-//   counters.forEach((counter:any)=>{
-    
-//     if(system.slug == counter.fieldValue){
-      
-//       system.totalCount=counter.totalCount ?? 0
-//     }
-//   })
-  
-// })
   
   return (
     <>
@@ -64,39 +54,35 @@ const Systems = ({systems}:SystemsProps) => {
 
 }
 
-export const getServerSideProps:GetServerSideProps = async()=>{
-
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTU1OTczZWYwMzAyNGM0M2I2ZDQxZCIsImlhdCI6MTY3MDczMjM0OCwiZXhwIjoxNjczMzI0MzQ4fQ.eOBGPosG3fOTwwxNa2DRHWbmI7yaK2o_V8s4Lb_Amtk';
-
-const config = {
-  headers:{
-    Authorization: `bearer ${token}`
-  }
+export type SystemProps={
+  systems:Array<any>
 }
 
-  const response = await axios.get('http://127.0.0.1:1337/Systems',config)
-  const systems = response.data;
-
-  // let systems = [
-  //   {name:'Super Nintendo',img:'',slug:'nintendo-snes',developer:'Nintendo',generation:'4',rate:5,type:'System'},
-  //   {name:'Mega Drive',img:'',slug:'sega-megadrive',developer:'sega',generation:'4',rate:5,type:'System'},
-  // ]
-
-  // const counters = [
-  //   {fieldValue:'nintendo-snes',totalCount:10,},
-  //   {fieldValue:'sega-megadrive',totalCount:5,},
-  // ]
-
-
-
-
-
-  return {
-      props:{
-        systems,
+export const getStaticProps:GetStaticProps<SystemProps> = async()=>{
+   
+  const result = await apolloClient.query({
+    query:gql`
+   query{
+    systems {
+      name
+      slug
+      generation
+      image{
+        name
+        url
+      }
+    }
+  }
+    `
+  });
+  
+      return {
+          props:{
+            systems:result.data.systems
+          }
       }
   }
-}
+  
 
 export default Systems
 

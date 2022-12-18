@@ -1,25 +1,18 @@
 import type { GetStaticPaths,GetStaticProps } from "next";
 
-import { PrismaClient,System } from "@prisma/client";
 import Card from "../../src/components/card";
 import Image from "next/image";
 import Layout from "../../src/layout/Layout";
 import Link from "next/link";
 import { FamilyRestroom, Star, Undo } from "@mui/icons-material";
 import { Alert } from "@mui/material";
-import axios from "axios";
+import { apolloClient, gql } from "../../src/apolloClient";
 
-const prisma = new PrismaClient();
 
 export type SystemPageProps=System;
 
-export default function SystemPage({system,imageFile}){
-
-    const {name,slug,id,generation,developer,release,description,logo,image,games,gamesRel} = system
-
-    const path = `http://localhost:1337${imageFile.url}`
-    
-    
+export default function SystemPage({system,games}:{system:any,games:Array<any>}){
+    const {name,slug,id,generation,developer,release,description,logo,image} = system
 
     return(
         <>
@@ -27,14 +20,7 @@ export default function SystemPage({system,imageFile}){
 
     <div className="system-info">
         <div className="system-data">
-            <img src={path} width={500} ></img>
-          {/* <Image
-                src={path}
-                alt='Game System'
-                width={200}
-                height={300}
-            /> */}
-        {/* <img className="system-image" src={`http://localhost:8000/static/ff1dcc92da5449ee129575d364b5dd97/f53ee/system.webp`}></img> */}
+            <Image src={`http://joneco.dev.br:1337${image.url}`} width={350} height={250} alt={name}></Image>
             <table className="system-table">
               <tbody>
               <tr>
@@ -65,10 +51,16 @@ export default function SystemPage({system,imageFile}){
           </table>
       </div>
     </div>
-      {/* <div className="system-review" dangerouslySetInnerHTML={{__html:systemInfo.html}}></div> */}
+    <h1 className="system-name">{developer} {name}</h1>
 
+
+    {logo?
+      <div className="system-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={350} height={250} alt={name}></Image></div>
+      : null
+    }    
+    
 <hr></hr>
-<h1>{developer} {name}</h1>
+      <div className="system-description">{description}</div>
 
       <div className="cards">
         
@@ -77,9 +69,8 @@ export default function SystemPage({system,imageFile}){
          ?
          <Alert severity="error"> No Games for this System in the Database!</Alert>
          :
-         gamesRel.map((game:any,index:number)=>{
-            // const gameProps = {...game, type:'Game'};
-            game.type = 'Game';
+         games.map((game:any,index:number)=>{
+                    
           return(
                   <Card key={index} cardParams={game}/>
                 )
@@ -99,7 +90,22 @@ export default function SystemPage({system,imageFile}){
             margin-top:20px;
             
           }
+          
+          h1.system-name{
+            text-align: center;
+            font-size: 5.0rem;
+            margin-bottom: 1.5rem;
+          }
+          .system-description{
+            margin-top:1rem;
+            font-size:1.5rem;
+          }
 
+          .system-logo{
+            align-items: center;
+            justify-items: center;
+            text-align: center;
+          }
           .system-review {
             column-count:2;
             columns: 20%, 2;
@@ -126,7 +132,9 @@ export default function SystemPage({system,imageFile}){
           .system-data{
               flex:1;
               display:flex;
-              justify-content:space-evenly;
+              justify-content:center;
+              justify-items:center;
+              max-width:75%;
               text-align:left;
               flex-direction:row;
               margin:20px 20px 20px 20px;
@@ -216,55 +224,88 @@ type SystemQuery ={
 
 
 // roteamento dinamico
-export const getStaticPaths:GetStaticPaths<SystemQuery> = async ()=>{
+export const getStaticPaths = async ()=>{
     
-const systemSlugs = await prisma.system.findMany({
-    select:{
-        slug:true,
-    }
-})
 
+const result = await apolloClient.query({
+  query:gql`
+ query{
+  systems {
+    slug
+  }
+}
+  `
+});
+
+const systemSlugs= result.data.systems
 
 // paths é um array,
-return{
-    paths: systemSlugs.map((system)=>({
-        params:{ slug: system.slug }
-    })),
 
-    fallback:false, // fallback false vai pra uma pasta de error 404 se o id nao existir
-}
+  return{
+      paths: systemSlugs.map((system:any)=>({
+          params:{ slug: system.slug }
+      })),
+
+      fallback:false, // fallback false vai pra uma pasta de error 404 se o id nao existir
+  }
 }
 
 // puxa as infos para jogar nas props da pagina
 export const getStaticProps:GetStaticProps<SystemPageProps,SystemQuery> = async({params})=>{
-    
-    const system = await prisma.system.findFirst({
-        where:{
-            slug: params?.slug
-    },
-    include:{
-        gamesRel:{
-            include:{
-                imageRel:true
-            }
+    const result = await apolloClient.query({
+      query:gql`
+        query {
+      systems(where:{slug:"${params?.slug}"}) {
+        __typename
+        name
+        slug
+        generation
+        developer
+        description
+        release
+        image{
+          name
+          url
         }
+        logo{
+          name
+          url
         }
-    }) as System
-
-
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTU1OTczZWYwMzAyNGM0M2I2ZDQxZCIsImlhdCI6MTY3MDczMjM0OCwiZXhwIjoxNjczMzI0MzQ4fQ.eOBGPosG3fOTwwxNa2DRHWbmI7yaK2o_V8s4Lb_Amtk';
-
-const config = {
-  headers:{
-    Authorization: `bearer ${token}`
+      }
+      games(where:{systems:{slug:"${params?.slug}"}}){
+        __typename
+      name
+      release
+      slug
+      developer
+      systems{
+        name
+        slug
+      }
+      image{
+      name
+      url
+    }
+    logo{
+          name
+          url
+        }
+    categories{
+      name
+      short_name
+    }
   }
-}
+    }
+      `
+    })
 
-  const response = await axios.get(`http://127.0.0.1:1337/upload/files/${system.image}`,config)
-  const imageFile = response.data;
 
+
+
+    const system = result.data.systems[0]
+    const games = result.data.games
 
     return {
-        props:{system,imageFile}
+        props:{system,games}
     }
 }

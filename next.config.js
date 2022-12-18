@@ -4,8 +4,16 @@ const nextConfig = {
   swcMinify: true,
 
   images: {
-    domains: ['https://localhost','localhost','http://localhost'],
-    path:'http://localhost:1337'
+    domains: ['joneco.dev.br'],
+    path:'http://joneco.dev.br:1337',
+    unoptimized: true,
+    // remotePatterns:[
+    //   {
+    //     protocol: "http",
+    //     hostname: "joneco.dev.br:1337",
+    //     pathname: "/uploads/**"
+    //   }
+    // ]
 },
 }
 
