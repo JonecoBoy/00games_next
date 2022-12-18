@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FamilyRestroom, Star, Undo } from "@mui/icons-material";
 import { Alert } from "@mui/material";
 import { apolloClient, gql } from "../../src/apolloClient";
+import MetaTags from "../../src/components/meta-tags";
 
 
 export type SystemPageProps={};
@@ -15,7 +16,8 @@ export default function SystemPage({system,games}:{system:any,games:Array<any>})
     const {name,slug,id,generation,developer,release,description,logo,image} = system
 
     return(
-        <>
+        <article>
+          <MetaTags title={name} description={'Games and informations for '+ name + ' videogame system'}/>
       <Link href ="/"><button><Undo/>Back</button></Link>
 
     <div className="system-info">
@@ -212,7 +214,7 @@ export default function SystemPage({system,games}:{system:any,games:Array<any>})
           
         `}
     </style>
-</>
+</article>
     )
 }
 

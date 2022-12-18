@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { apolloClient, gql } from '../apolloClient';
 import { GetStaticProps } from 'next';
 import axios from 'axios';
+import { useQuery } from '@apollo/client';
 
 
 
@@ -72,6 +73,7 @@ export default function NavBar() {
   
 // por num prebuild pra puxar de la e montar um .json 
 // se nao por aqui na mao
+const {data,loading} = useQuery(systemsQuery);
 
 const systemsGroups = [
   {generation:4, systems:[
@@ -225,4 +227,12 @@ const [open, setOpen] = React.useState(
   );
  
 }
+const systemsQuery = gql`
+query{
+  systems{
+   name
+   slug
+   generation
+ }
+}`
 

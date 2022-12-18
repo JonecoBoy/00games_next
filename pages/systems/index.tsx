@@ -3,6 +3,7 @@ import Card from "../../src/components/card"
 import { cardParams } from "../../src/components/card"
 import type { GetStaticPaths,GetStaticProps } from "next";
 import { apolloClient, gql } from "../../src/apolloClient";
+import MetaTags from "../../src/components/meta-tags";
 
 
 export type SystemInfoProps={
@@ -25,7 +26,8 @@ const Systems = ({systems}:SystemsProps) => {
 
   
   return (
-    <>
+    <article>
+      <MetaTags title={'Sistemas'} description={'List of videogame system by generation.'}/>
       <h1>Systems</h1>
       <div className="cards">
         {systems.map((item:any,index:number)=>{
@@ -48,7 +50,7 @@ const Systems = ({systems}:SystemsProps) => {
           
         `}
     </style>
-</>
+</article>
     
   )
 

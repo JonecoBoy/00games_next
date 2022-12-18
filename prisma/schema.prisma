@@ -10,11 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model User {
-//   id    String  @id @default(auto()) @map("_id") @db.ObjectId
-//   name  String?
-//   email String
-// }
+model User {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  surname          String
+  email            String    @unique
+  password         String?
+  provider         String
+  sentMessages     Message[] @relation("SenderUser")
+  receivedMessages Message[] @relation("ReceiverUser")
+
+  @@map("users")
+}
+
+model Message {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  message    String
+  createdAt  DateTime @default(now())
+  sender     User     @relation("SenderUser", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId   String   @db.ObjectId
+  receiver   User     @relation("ReceiverUser", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String   @db.ObjectId
+
+  @@map("messages")
+}
 
 model System {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId

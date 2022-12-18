@@ -9,6 +9,7 @@ import { Alert } from "@mui/material";
 import { apolloClient, gql } from "../../src/apolloClient";
 import YouTube from "react-youtube";
 import { Game } from "@prisma/client";
+import MetaTags from "../../src/components/meta-tags";
 
 
 export type GamePageProps={
@@ -22,7 +23,8 @@ export default function GamePage({game}:{game:any}){
     const aspectRatio = logo.width/logo.height;
     
     return(
-      <>
+      <article>
+        <MetaTags title={name} description={'Informations about the '+ name + ' game'}/>
       {logo?
         <div className="game-logo"><Image src={`http://joneco.dev.br:1337${logo.url}`} width={750} height={750/aspectRatio} alt={game.name}></Image></div>
       :<h1>{name}</h1>
@@ -198,7 +200,7 @@ export default function GamePage({game}:{game:any}){
             
           `}
       </style>
-  </>
+  </article>
     )
 }
 
