@@ -9,7 +9,7 @@ import { Alert } from "@mui/material";
 import { apolloClient, gql } from "../../src/apolloClient";
 
 
-export type SystemPageProps=System;
+export type SystemPageProps={};
 
 export default function SystemPage({system,games}:{system:any,games:Array<any>}){
     const {name,slug,id,generation,developer,release,description,logo,image} = system

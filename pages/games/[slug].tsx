@@ -8,9 +8,12 @@ import { Cancel, CheckCircle, FamilyRestroom, SportsEsports, Star, Undo } from "
 import { Alert } from "@mui/material";
 import { apolloClient, gql } from "../../src/apolloClient";
 import YouTube from "react-youtube";
+import { Game } from "@prisma/client";
 
 
-export type GamePageProps=Game;
+export type GamePageProps={
+  
+};
 
 export default function GamePage({game}:{game:any}){
     const {name,slug,id,developer,release,description,logo,image,systems,players,categories,online,videoId,screenshots} = game

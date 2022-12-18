@@ -71,6 +71,7 @@ export default function NavBar() {
     
   
 // por num prebuild pra puxar de la e montar um .json 
+// se nao por aqui na mao
 
 const systemsGroups = [
   {generation:4, systems:[
@@ -175,7 +176,6 @@ const [open, setOpen] = React.useState(
                 <Collapse key={`colapse-${index}`} in={open[index]}>
                   {item.systems.map(
                     (system:any,index:number)=>{
-                      console.log(index)
                     return (
                       <MenuItem key={index} onClick={handleClose}><Link className='menuItem' href = {`/systems/${system.slug}`}>{`${system.developer} ${system.name} `}</Link></MenuItem>
                     )
