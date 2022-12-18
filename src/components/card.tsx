@@ -34,12 +34,13 @@ const Card = ({cardParams}:{cardParams:cardParams})=>{
     const {name,release,developer,generation,rate,slug,genre,type,totalCount,image,categories,players,__typename} = cardParams;
 
     const slugPath: string = __typename +'/'+ slug
+    console.log(slugPath.toLowerCase())
     
 
     const imageWidth = 400;
 return (
     
-    <Link className="card" href={slugPath.toLowerCase()}>
+    <Link className="card" href={'../'+slugPath.toLowerCase()}>
         
         <h2 className="title">{name}</h2>
             
