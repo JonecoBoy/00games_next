@@ -1,16 +1,13 @@
 import { z } from "zod";
-import { userMessages } from "../../../user/userMessages";
+import { allowedProvidersList } from "../../../auth/allowedProviders";
 
-const surnameMinLength = 2;
-const surnameMaxLength = 48;
-const surnameField = "sobrenome";
+const messages = {
+  invalidProvider:
+    "Ohoou you are not allowed to be here. GET OUT!",
+};
 
-export const surnameSchema = z
+export const providerSchema = z
   .string()
-  .min(surnameMinLength, {
-    message: userMessages.min(surnameField, surnameMinLength),
-  })
-  .max(surnameMaxLength, {
-    message: userMessages.max(surnameField, surnameMaxLength),
-  })
-  .transform((surname) => surname.trim());
+  .refine((provider) => allowedProvidersList.includes(provider), {
+    message: messages.invalidProvider,
+  });

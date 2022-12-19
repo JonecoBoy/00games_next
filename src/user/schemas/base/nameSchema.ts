@@ -3,7 +3,7 @@ import { userMessages } from "../../../user/userMessages";
 
 const nameMinLength = 2;
 const nameMaxLength = 24;
-const nameField = "nome";
+const nameField = "name";
 export const nameSchema = z
   .string()
   .min(nameMinLength, {

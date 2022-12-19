@@ -1,7 +1,9 @@
+import { useSession } from "next-auth/react";
 import * as React from "react";
 import NavBar from '../components/navBar'
 
 const Header =()=>{
+
 return (
 
         <header>

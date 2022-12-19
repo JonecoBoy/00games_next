@@ -7,7 +7,7 @@ import { providerSchema } from "./base/providerSchema";
 import { uniqueEmailSchema } from "./base/uniqueEmailSchema";
 
 const messages = {
-  invalidProvider: "É necessário utilizar a autenticação por credenciais.",
+  invalidProvider: "Credentials Auth is needed.",
 };
 
 const hashedPasswordSchema = passwordSchema.transform(

@@ -5,7 +5,7 @@ import { providerSchema } from "./base/providerSchema";
 import { uniqueEmailSchema } from "./base/uniqueEmailSchema";
 
 const messages = {
-  invalidProvider: "É necessário utilizar a autenticação do Google.",
+  invalidProvider: "Google Auth is needed.",
 };
 
 const googleProviderSchema = providerSchema.refine(

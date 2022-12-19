@@ -3,6 +3,7 @@ import * as userRepository from "./userRepository";
 import bcrypt from "bcrypt";
 
 export async function credentialsLogin(email: string, password: string) {
+  // maybeUser pois ele pode vir nulo ou os dados
   const maybeUser = await userRepository.findByEmail(email, {
     select: {
       id: true,

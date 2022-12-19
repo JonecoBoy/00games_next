@@ -7,7 +7,7 @@ export type AvatarProps = {
   name?: string;
 };
 
-export function Avatar({ size = 24, name, alt, src }: AvatarProps) {
+export function Avatar({ size = 64, name, alt, src }: AvatarProps) {
   return (
     <div className="avatar">
       {src === undefined && name !== undefined ? (

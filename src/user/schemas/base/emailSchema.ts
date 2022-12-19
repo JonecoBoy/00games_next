@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const messages = {
-  emailInvalid: "O email digitado é inválido.",
+  emailInvalid: "this email is invalid.",
 };
 
 export const emailSchema = z.string().email({

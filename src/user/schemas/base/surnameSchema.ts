@@ -3,7 +3,7 @@ import { userMessages } from "../../../user/userMessages";
 
 const surnameMinLength = 2;
 const surnameMaxLength = 48;
-const surnameField = "sobrenome";
+const surnameField = "surname";
 
 export const surnameSchema = z
   .string()

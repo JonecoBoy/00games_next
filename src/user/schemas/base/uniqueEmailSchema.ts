@@ -2,7 +2,7 @@ import * as userRepository from "../../../user/userRepository";
 import { emailSchema } from "./emailSchema";
 
 const messages = {
-  emailExists: "Esse email já está cadastrado",
+  emailExists: "this email is already registered",
 };
 
 export const uniqueEmailSchema = emailSchema.refine(

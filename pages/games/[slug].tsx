@@ -10,6 +10,7 @@ import { apolloClient, gql } from "../../src/apolloClient";
 import YouTube from "react-youtube";
 import { Game } from "@prisma/client";
 import MetaTags from "../../src/components/meta-tags";
+import { signIn, useSession } from "next-auth/react";
 
 
 export type GamePageProps={
@@ -21,7 +22,8 @@ export default function GamePage({game}:{game:any}){
     const descriptionFirstLetter=(description as String).substring(0,1)
     const restDescription = (description as String).substring(1,(description as String).length)
     const aspectRatio = logo.width/logo.height;
-    
+    const {data: session} = useSession()
+    if(session){
     return(
       <article>
         <MetaTags title={name} description={'Informations about the '+ name + ' game'}/>
@@ -202,6 +204,34 @@ export default function GamePage({game}:{game:any}){
       </style>
   </article>
     )
+        }
+        else{
+          return (
+            <div className="signin-container">
+              <div className="signin-message">Not signed in </div>
+              <br/>
+              <button className="signin-button" onClick={() => signIn()}>Sign in</button>
+              <style jsx>{`
+                .signin-container{
+                  justify-content: center;
+                  text-align: center;
+                  justify-items: center;
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  font-size:2.5rem;
+                }
+                  .signin-button{
+                    size:50%;
+                    text-align:center;
+                    justify-content:center;
+                    font-size:2.5rem;
+                  }
+                `}
+              </style>
+            </div>
+          )
+        }
 }
 
 

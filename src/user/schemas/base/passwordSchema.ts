@@ -6,8 +6,8 @@ const passwordMaxLength = 64;
 export const passwordSchema = z
   .string()
   .min(passwordMinLength, {
-    message: userMessages.min("senha", passwordMinLength),
+    message: userMessages.min("password", passwordMinLength),
   })
   .max(passwordMaxLength, {
-    message: userMessages.max("senha", passwordMaxLength),
+    message: userMessages.max("password", passwordMaxLength),
   });

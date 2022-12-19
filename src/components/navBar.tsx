@@ -5,6 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import {Avatar} from './Avatar';
+
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
@@ -16,11 +18,13 @@ import { apolloClient, gql } from '../apolloClient';
 import { GetStaticProps } from 'next';
 import axios from 'axios';
 import { useQuery } from '@apollo/client';
+import { useSession,signIn, signOut } from 'next-auth/react';
 
 
 
 export default function NavBar() {
   const [systems,setSystems] = React.useState([])
+  const {data: session,status:sessionStatus} = useSession()
 
   // React.useEffect(()=>{
   //   const fetchData = async()=>{
@@ -73,7 +77,7 @@ export default function NavBar() {
   
 // por num prebuild pra puxar de la e montar um .json 
 // se nao por aqui na mao
-const {data,loading} = useQuery(systemsQuery);
+// const {data,loading} = useQuery(systemsQuery);
 
 const systemsGroups = [
   {generation:4, systems:[
@@ -85,6 +89,12 @@ const systemsGroups = [
     {name:'master system',developer: 'sega',generation:3, slug: 'sega-master-system'},
     ]}
   ];
+
+
+
+// sessoes 
+
+
 
 const [open, setOpen] = React.useState(
   // criar um array todo com false para a quantidade de grupos da query de puxar os sistemas
@@ -218,6 +228,102 @@ const [open, setOpen] = React.useState(
             <Link href="/contact"> Contact Us</Link>
           </IconButton>
             </div>
+
+            
+            <div>
+              <IconButton
+                size="medium"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu2}
+                color="inherit"
+                
+              >
+                My Account
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                
+                anchorEl={anchorE2}
+                open={Boolean(anchorE2)}
+                onClose={handleClose2}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+
+                {(!session)?
+                <MenuItem ><Link className='menuItem' href = {`/api/auth/signin`}>LogIn</Link></MenuItem>
+                : 
+                <div className='my-account'>
+                  <div className= 'my-account-info'>
+                  <div className= 'my-account-left'>
+                    <Link href={'/user/profile'}><Avatar name={session?.user?.name} alt={session?.user?.name} /></Link>
+                  </div>
+                  <div className= 'my-account-right'>
+                  <Link href={'/user/profile'}><div className='account-item'>{session?.user?.name}</div></Link>
+                  <Link href={'/user/profile'}><div className='account-item'>{session?.user?.email}</div></Link>
+                  {/* <div className='account-item'>{session?.expires}</div> */}
+                  </div>
+                  </div>
+                  <div className='my-account-bottom'>
+                  <Divider key={`divider-00`} sx={{ my: 0.5 }} />
+                  <MenuItem onClick={() => signOut()}> LogOut</MenuItem>   
+                  </div>
+                  <style jsx>
+                    {`
+                    .my-account-info{
+                        display: grid; 
+                        grid-template-columns: 0.5fr 1fr; 
+                        grid-template-rows: 1fr; 
+                        gap: 20px 20px; 
+                        grid-template-areas: 
+                          ". .";  
+                        margin:10px;
+                        font-size:1.5rem;
+                      }
+                      .my-account-bottom{
+                        justify-content:center;
+                        
+                      }
+                      .my-account-left{
+                        justify-content: center;
+                        justify-items: center;
+                        text-align: center;
+                        display: flex;
+                        vertical-align: center;
+                        margin: auto
+                      }
+                      .my-account-right{
+                        justify-content: center;
+                        justify-items: center;
+                        text-align: left;
+                        display: flex;
+                        flex-direction:column;
+                        vertical-align: center;
+                        margin: auto
+                      }
+                    `}
+                  </style>
+                </div>  
+              }
+                  
+                
+                
+                
+                            
+
+                
+              </Menu>
+            </div>
+            
+            
+           
           
         </Toolbar>
         
