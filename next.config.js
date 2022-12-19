@@ -7,6 +7,7 @@ const nextConfig = {
     domains: ['joneco.dev.br'],
     path:'http://joneco.dev.br:1337',
     unoptimized: true,
+    //
     // remotePatterns:[
     //   {
     //     protocol: "http",
