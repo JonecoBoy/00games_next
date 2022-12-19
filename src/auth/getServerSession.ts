@@ -3,7 +3,7 @@ import type {
     NextApiResponse,
     GetServerSidePropsContext,
   } from "next";
-  import { authOptions } from "src/pages/api/auth/[...nextauth]";
+  import { authOptions } from "../../pages/api/auth/[...nextauth]";
   import { getSession } from "next-auth/react";
   
   export function getServerSession(

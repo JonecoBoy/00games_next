@@ -67,6 +67,7 @@ export async function getUserSessionData(email: string) {
     },
   });
   const userSession: Session["user"] = {
+    //@ts-ignore
     userId: maybeUser?.id ?? NaN,
     email: maybeUser?.email ?? "",
     name: `${maybeUser?.name} ${maybeUser?.surname}`,
