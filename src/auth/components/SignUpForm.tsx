@@ -12,11 +12,11 @@ import { allowedProviders } from "../allowedProviders";
 import { signIn } from "next-auth/react";
 
 const texts = {
-  title: "Criar conta",
-  submit: "Enviar",
-  passwordMatchError: "As senhas são diferentes",
-  submitSuccess: "Conta criada com sucesso",
-  submitFailure: "Houve um erro ao criar sua conta",
+  title: "Create Account",
+  submit: "Send",
+  passwordMatchError: "passwords didnt match",
+  submitSuccess: "Account successfully created",
+  submitFailure: "Error creating the account",
 };
 
 const signupSchema = baseUserSchema
@@ -85,7 +85,7 @@ export function SignUpForm() {
       <h1 className="signup-title">{texts.title}</h1>
       <input
         type="text"
-        placeholder="Nome"
+        placeholder="Name"
         className={`signup-field ${errors.name("error")}`}
         //@ts-ignore
         name={fields.name()}
@@ -96,7 +96,7 @@ export function SignUpForm() {
       ))}
       <input
         type="text"
-        placeholder="Sobrenome"
+        placeholder="Sur Name"
         className={`signup-field ${errors.surname("error")}`}
         //@ts-ignore
         name={fields.surname()}
@@ -118,7 +118,7 @@ export function SignUpForm() {
       ))}
       <input
         type="password"
-        placeholder="Senha"
+        placeholder="Password"
         className={`signup-field ${errors.password("error")}`}
         name={fields.password()}
         disabled={loading}
@@ -128,7 +128,7 @@ export function SignUpForm() {
       ))}
       <input
         type="password"
-        placeholder="Confirmar senha"
+        placeholder="Confirm Password"
         className={`signup-field ${errors.confirmPassword("error")}`}
         name={fields.confirmPassword()}
       />
@@ -145,7 +145,7 @@ export function SignUpForm() {
       <style jsx>{`
         .signup-form {
           max-width: 600px;
-          background-color: #fff;
+          background-color:#C4DBF6;
           border-radius: 4px;
           border: solid 1px #ccc;
           margin: auto;
@@ -171,17 +171,20 @@ export function SignUpForm() {
         .signup-submit {
           width: 100%;
           margin-top: 6px;
-          background-color: transparent;
+          background-color: #3d963d;
           border-radius: 12px;
           border: solid 1px #2139e0;
-          color: #2139e0;
-          font-weight: 600;
+          color: #white;
+          font-weight: 800;
+          font-size:1.2rem;
+          text-align:center;
+          justify-content:center;
           padding: 8px 16px;
           box-sizing: border-box;
           text-transform: uppercase;
         }
         .signup-submit:hover {
-          background-color: rgba(0, 0, 0, 0.05);
+          background-color: rgba(3, 77, 25, 0.945);
         }
         .signup-field:disabled {
           border-color: #ccc;
@@ -190,6 +193,9 @@ export function SignUpForm() {
           background-color: rgba(0, 0, 0, 0.05);
           color: #ccc;
           border-color: #ccc;
+        }
+        button{
+          background-color:green;
         }
       `}</style>
     </form>

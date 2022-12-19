@@ -210,25 +210,11 @@ export default function GamePage({game}:{game:any}){
             <div className="signin-container">
               <div className="signin-message">Not signed in </div>
               <br/>
-              <button className="signin-button" onClick={() => signIn()}>Sign in</button>
-              <style jsx>{`
-                .signin-container{
-                  justify-content: center;
-                  text-align: center;
-                  justify-items: center;
-                  flex: 1;
-                  display: flex;
-                  flex-direction: column;
-                  font-size:2.5rem;
-                }
-                  .signin-button{
-                    size:50%;
-                    text-align:center;
-                    justify-content:center;
-                    font-size:2.5rem;
-                  }
-                `}
-              </style>
+              <div className="sign-buttons">
+                <button className="signin-button" onClick={() => signIn()}>Sign in</button>
+                <Link className='menuItem' href = {`/signup`}><button className="signup-button">Sign Up</button></Link>
+              </div>
+
             </div>
           )
         }

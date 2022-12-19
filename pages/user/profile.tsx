@@ -1,5 +1,6 @@
 import type { GetServerSideProps } from "next";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { getServerSession } from "../../src/auth/getServerSession";
 import * as userRepository from "../../src/user/userRepository";
 
@@ -39,6 +40,7 @@ export default function ProfilePage({
         .profile-item {
           padding-top: 8px;
         }
+
       `}</style>
     </div>
   );
@@ -49,8 +51,9 @@ else{
       <div className="signin-message">Not signed in </div>
       <br/>
       <button className="signin-button" onClick={() => signIn()}>Sign in</button>
+      <Link className='menuItem' href = {`/signup`}><button className="signup-button">Sign Up</button></Link>
       <style jsx>{`
-        .signin-container{
+      .signin-container{
           justify-content: center;
           text-align: center;
           justify-items: center;
@@ -58,15 +61,43 @@ else{
           display: flex;
           flex-direction: column;
           font-size:2.5rem;
+          size:50%;
         }
+        .sign-buttons{
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          text-align: center;
+          justify-items: center;
+          padding:20px;
+        }
+
           .signin-button{
             size:50%;
             text-align:center;
             justify-content:center;
             font-size:2.5rem;
+            margin-left:20px;
           }
-        `}
-      </style>
+          .signup-button{
+            size:50%;
+            text-align:center;
+            justify-content:center;
+            font-size:2.5rem;
+            margin-left:20px;
+            background-color:#099bc0;
+          }
+
+          button:hover{
+            cursor:pointer;
+          }
+
+          .signup-button:hover{
+
+            background-color:#056077;
+          }
+
+      `}</style>
     </div>
   )
 }

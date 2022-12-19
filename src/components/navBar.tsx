@@ -10,7 +10,7 @@ import {Avatar} from './Avatar';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-import { Collapse, Divider} from '@mui/material';
+import { CircularProgress, Collapse, Divider} from '@mui/material';
 
 import {ExpandMore,ExpandLess} from '@mui/icons-material';
 import Link from 'next/link';
@@ -19,66 +19,42 @@ import { GetStaticProps } from 'next';
 import axios from 'axios';
 import { useQuery } from '@apollo/client';
 import { useSession,signIn, signOut } from 'next-auth/react';
+import { systemsByGenerationQuery } from '../gql/systemsByGenerationQuery';
 
+export type SystemProps ={
+  name:string;
+  slug:string;
+  developer:string;
+  generation:number;
+  __typename:string
+}
 
 
 export default function NavBar() {
-  const [systems,setSystems] = React.useState([])
+  // const [systems,setSystems] = React.useState([])
   const {data: session,status:sessionStatus} = useSession()
 
-  // React.useEffect(()=>{
-  //   const fetchData = async()=>{
-  //     // const result = await axios.get('http://joneco.dev.br:1337/systems');
-  //     const result = await apolloClient.query({
-  //       query:gql`
-  //         query{
-  //           systemsConnection{
-              
-  //             groupBy{
-  //               generation{
-  //                 key
-  //                 connection{
-  //                   values{
-  //                     name
-  //                     slug
-  //                     developer
-  //                     generation
-  //                   }
-  //                   aggregate{
-  //                     count
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       `
-  //     })
+
+// const {data,loading} = useQuery(systemsByGenerationQuery);
+
+//   const systems = data?.systemsConnection.groupBy.generation
+//   const systemsByGen = systems?.map((system:any)=>{
+//     return(
+//       {generation:system.key,systems:system.connection.values}
       
-  //     const systemsRaw = result.data.systemsConnection.groupBy.generation
+      
+//       )
+//   })
 
-  //     const systemsGroups=systemsRaw.map((item)=>{
-  //       return {generation:item.key,count:item.connection.aggregate.count,
-  //               systems:item.connection.values
-            
-  //       }
-        
-  //   })
-
-  //     setSystems(systemsGroups)
-  //   }
-  //   fetchData()
-  //  },[])
+//   // por em ordem alfabetica
+//   const systemsGroups = systemsByGen?.sort((a:any,b:any)=>{
+//     return a.generation - b.generation;
+// })
 
 
 
 
-    
-  
-// por num prebuild pra puxar de la e montar um .json 
-// se nao por aqui na mao
-// const {data,loading} = useQuery(systemsQuery);
-
+const loading = false;
 const systemsGroups = [
   {generation:4, systems:[
     {name:'snes',developer: 'nintendo',generation:4, slug: 'nintendo-snes'},
@@ -92,14 +68,12 @@ const systemsGroups = [
 
 
 
-// sessoes 
 
+  const [open, setOpen] = React.useState(
+    // criar um array todo com false para a quantidade de grupos da query de puxar os sistemas
+    Array.from({length: systemsGroups?.length},()=>false)
+  );
 
-
-const [open, setOpen] = React.useState(
-  // criar um array todo com false para a quantidade de grupos da query de puxar os sistemas
-  Array.from({length: systemsGroups.length},()=>false)
-);
 
   const handleClick = (index:number) => {
     
@@ -179,27 +153,32 @@ const [open, setOpen] = React.useState(
                   horizontal: 'left',
                 }}
               >
-                <MenuItem key={-1} onClick={handleClose}><Link className='menuItem' href = {`/systems/`}>{`All Systems`}</Link></MenuItem>
-                <Divider key={`divider-00`} sx={{ my: 0.5 }} />
-                {systemsGroups.map((item:any,index:number)=>{
-                  return(<div key={index}>
+                {loading?
+                  <CircularProgress/>
+                  :<div>
+                    <MenuItem key={-1} onClick={handleClose}><Link className='menuItem' href = {`/systems/`}>{`All Systems`}</Link></MenuItem>
+                    <Divider key={`divider-00`} sx={{ my: 0.5 }} />
+                    {systemsGroups?.map((item:any,index:number)=>{
+                      return(<div key={index}>
 
-                  <MenuItem onClick={()=>handleClick(index)}>{item.generation} {open[index]?<ExpandLess/>:<ExpandMore/>}</MenuItem>
-                <Collapse key={`colapse-${index}`} in={open[index]}>
-                  {item.systems.map(
-                    (system:any,index:number)=>{
-                    return (
-                      <MenuItem key={index} onClick={handleClose}><Link className='menuItem' href = {`/systems/${system.slug}`}>{`${system.developer} ${system.name} `}</Link></MenuItem>
-                    )
-                  })}
-                                    
-                  </Collapse>
-                  {/* nao colocar a divisao se for o ultimo item */}
-                  {index == (systemsGroups.length-1) ? null :<Divider key={`divider-${index}`} sx={{ my: 0.5 }} />}
-                  
-                  </div>
-                  )
-                })}
+                      <MenuItem onClick={()=>handleClick(index)}>{item.generation} {open[index]?<ExpandLess/>:<ExpandMore/>}</MenuItem>
+                    <Collapse key={`colapse-${index}`} in={open[index]}>
+                      {item.systems.map(
+                        (system:any,index:number)=>{
+                        return (
+                          <MenuItem key={index} onClick={handleClose}><Link className='menuItem' href = {`/systems/${system.slug}`}>{`${system.developer} ${system.name} `}</Link></MenuItem>
+                        )
+                      })}
+                                        
+                      </Collapse>
+                      {/* nao colocar a divisao se for o ultimo item */}
+                      {index == (systemsGroups?.length-1) ? null :<Divider key={`divider-${index}`} sx={{ my: 0.5 }} />}
+                      
+                      </div>
+                      )
+                    })}
+                </div>
+                }
                 
               </Menu>
             </div>
@@ -258,7 +237,10 @@ const [open, setOpen] = React.useState(
               >
 
                 {(!session)?
-                <MenuItem ><Link className='menuItem' href = {`/api/auth/signin`}>LogIn</Link></MenuItem>
+                <div>
+                  <MenuItem ><Link className='menuItem' href = {`/api/auth/signin`}>LogIn</Link></MenuItem>
+                  <MenuItem ><Link className='menuItem' href = {`/signup`}>Sign UP</Link></MenuItem>
+                </div>
                 : 
                 <div className='my-account'>
                   <div className= 'my-account-info'>
@@ -286,9 +268,11 @@ const [open, setOpen] = React.useState(
                           ". .";  
                         margin:10px;
                         font-size:1.5rem;
+                        color:black;
                       }
                       .my-account-bottom{
                         justify-content:center;
+                        color:black;
                         
                       }
                       .my-account-left{
@@ -298,6 +282,7 @@ const [open, setOpen] = React.useState(
                         display: flex;
                         vertical-align: center;
                         margin: auto
+                        color:black;
                       }
                       .my-account-right{
                         justify-content: center;
@@ -307,6 +292,10 @@ const [open, setOpen] = React.useState(
                         flex-direction:column;
                         vertical-align: center;
                         margin: auto
+                        color:black;
+                      }
+                      .account-item{
+                        color:black;
                       }
                     `}
                   </style>
@@ -333,12 +322,3 @@ const [open, setOpen] = React.useState(
   );
  
 }
-const systemsQuery = gql`
-query{
-  systems{
-   name
-   slug
-   generation
- }
-}`
-
