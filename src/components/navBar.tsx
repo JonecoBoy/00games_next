@@ -58,8 +58,7 @@ export default function NavBar() {
   const systemsGroups = systemsJson.map((item)=>{
     return item
   });
-  console.log(systemsGroups);
-
+  
 
 
   const [open, setOpen] = React.useState(

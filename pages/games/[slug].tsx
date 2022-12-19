@@ -11,13 +11,14 @@ import YouTube from "react-youtube";
 import { Game } from "@prisma/client";
 import MetaTags from "../../src/components/meta-tags";
 import { signIn, useSession } from "next-auth/react";
+import { json } from "stream/consumers";
 
 
 export type GamePageProps={
   
 };
 
-export default function GamePage({game}:{game:any}){
+export default function GamePage({game,reviews}:{game:any,reviews:any}){
     const {name,slug,id,developer,release,description,logo,image,systems,players,categories,online,videoId,screenshots} = game
     const descriptionFirstLetter=(description as String).substring(0,1)
     const restDescription = (description as String).substring(1,(description as String).length)
@@ -53,7 +54,7 @@ export default function GamePage({game}:{game:any}){
   
           </div>
           </div>
-          <div className="review">
+          <div className="text-content">
           
           <div className="post-content">
           <h3>Sinopse</h3>
@@ -98,8 +99,11 @@ export default function GamePage({game}:{game:any}){
   
           </div>
           
-  
-  
+
+          <h3>Reviews</h3>
+          <div>
+            {JSON.stringify(reviews)}
+          </div>
         </div>
       <style jsx>
           {`
@@ -241,13 +245,17 @@ const result = await apolloClient.query({
   `
 });
 
+
+
+
+
 const gamesSlugs= result.data.games
 
 // paths é um array,
 
   return{
       paths: gamesSlugs.map((game:any)=>({
-          params:{ slug: game.slug }
+          params:{ slug: game.slug}
       })),
 
       fallback:false, // fallback false vai pra uma pasta de error 404 se o id nao existir
@@ -302,15 +310,33 @@ export const getStaticProps:GetStaticProps<GamePageProps,SystemQuery> = async({p
           short_name
         }
   }
+
+    
+
     }
       `
     })
 
-
+    const reviewsResult = await apolloClient.query({
+      query:gql`
+      query{
+        reviews(where:{game:{slug:"${params?.slug}"}}){
+          __typename
+          id
+          title
+          text
+        }
+      }
+      `
+    });
+    
+    
+    console.log(reviewsResult)
 
     const game = result.data.games[0]
+    const reviews = reviewsResult.data.reviews
    
     return {
-        props:{game}
+        props:{game,reviews}
     }
 }
