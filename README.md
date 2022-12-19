@@ -36,9 +36,8 @@ yarn dev
  npm run dev
  ```
 
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/systems.png" width="200" alt="Nest Logo" /></a>
-
-![Systems](/repository/public/my_account_menu_logged?raw=true "My Account")
+ <img src="https://github.com/joneco02/00games_next/blob/main/public/systems.png?raw=true" width="900" alt="Systems" />
+ <img src="https://github.com/joneco02/00games_next/blob/main/public/my_account_menu_logged.png?raw=true" width="900" alt="My Account" />
 
 ## Login
 funcionando pereitamente local utilizando credentials ou google
