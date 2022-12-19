@@ -42,9 +42,20 @@ yarn dev
 ## Login
 funcionando pereitamente local utilizando credentials ou google
 
+<img src="https://github.com/joneco02/00games_next/blob/main/public/login_register.png?raw=true" width="900" alt="My Account" />
+
+
+#### Login
+<img src="https://github.com/joneco02/00games_next/blob/main/public/create_account.png?raw=true" width="900" alt="My Account" />
+
+### Create Account
+<img src="https://github.com/joneco02/00games_next/blob/main/public/login.png?raw=true" width="900" alt="My Account" />
+
 ## Área de Autorização
 
 coloquei ao clicar na pagina de informacoes de qualquer jogo para só deixar se estiver logado, não era essa minha proposta inicial, mas serviu para adequar ao requerimento de autorização
+
+<img src="https://github.com/joneco02/00games_next/blob/main/public/not_signed_in.png?raw=true" width="900" alt="My Account" />
 
 ## Base de Dados
 ```
