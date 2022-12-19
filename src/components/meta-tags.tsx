@@ -6,9 +6,10 @@ export type MetaTagsProps={
 }
 
 const MetaTags= ({title,description}:MetaTagsProps)=>{
+  const metaTitle = title + '|00Games'
 return(
     <Head>
-   <title>{title} | 00Games</title>
+   <title>{metaTitle}</title>
   <meta name='description' content={description} />
   <meta property='og:title' content='Joneco' />
   <meta
