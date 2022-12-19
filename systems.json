@@ -1,0 +1,94 @@
+[
+    {
+        "generation": 4,
+        "systems": [
+            {
+                "__typename": "Systems",
+                "name": "Neo Geo AES",
+                "slug": "snk-neo-geo-aes",
+                "developer": "SNK",
+                "generation": 4
+            },
+            {
+                "__typename": "Systems",
+                "name": "Pc Engine",
+                "slug": "nec-pc-engine",
+                "developer": "NEC",
+                "generation": 4
+            },
+            {
+                "__typename": "Systems",
+                "name": "Super Nintendo Entertainment System",
+                "slug": "super-nintendo-entertainment-system",
+                "developer": "Nintendo",
+                "generation": 4
+            },
+            {
+                "__typename": "Systems",
+                "name": "Mega Drive",
+                "slug": "sega-mega-drive",
+                "developer": "Sega",
+                "generation": 4
+            },
+            {
+                "__typename": "Systems",
+                "name": "Neo Geo CD",
+                "slug": "snk-neo-geo-cd",
+                "developer": "SNK",
+                "generation": 4
+            }
+        ]
+    },
+    {
+        "generation": 5,
+        "systems": [
+            {
+                "__typename": "Systems",
+                "name": "3DO",
+                "slug": "panasonic-3do",
+                "developer": "Panasonic",
+                "generation": 5
+            },
+            {
+                "__typename": "Systems",
+                "name": "Playstation",
+                "slug": "sony-playstation",
+                "developer": "Sony",
+                "generation": 5
+            },
+            {
+                "__typename": "Systems",
+                "name": "Saturn",
+                "slug": "sega-saturn",
+                "developer": "Sega",
+                "generation": 5
+            }
+        ]
+    },
+    {
+        "generation": 6,
+        "systems": [
+            {
+                "__typename": "Systems",
+                "name": "Playstation 2",
+                "slug": "sony-playstation-2",
+                "developer": "Sony",
+                "generation": 6
+            },
+            {
+                "__typename": "Systems",
+                "name": "Dreamcast",
+                "slug": "sega-dreamcast",
+                "developer": "Sega",
+                "generation": 6
+            },
+            {
+                "__typename": "Systems",
+                "name": "Playstation Portable",
+                "slug": "sony-playstation-portable",
+                "developer": "Sony",
+                "generation": 6
+            }
+        ]
+    }
+]

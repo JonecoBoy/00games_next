@@ -20,6 +20,8 @@ import axios from 'axios';
 import { useQuery } from '@apollo/client';
 import { useSession,signIn, signOut } from 'next-auth/react';
 import { systemsByGenerationQuery } from '../gql/systemsByGenerationQuery';
+import * as systemsJson from '../../systems.json'
+
 
 export type SystemProps ={
   name:string;
@@ -35,37 +37,28 @@ export default function NavBar() {
   const {data: session,status:sessionStatus} = useSession()
 
 
-const {data,loading} = useQuery(systemsByGenerationQuery);
+// const {data,loading} = useQuery(systemsByGenerationQuery);
 
-  const systems = data?.systemsConnection.groupBy.generation
-  const systemsByGen = systems?.map((system:any)=>{
-    return(
-      {generation:system.key,systems:system.connection.values}
+//   const systems = data?.systemsConnection.groupBy.generation
+//   const systemsByGen = systems?.map((system:any)=>{
+//     return(
+//       {generation:system.key,systems:system.connection.values}
       
       
-      )
-  })
+//       )
+//   })
 
-  // por em ordem alfabetica
-  const systemsGroups = systemsByGen?.sort((a:any,b:any)=>{
-    return a.generation - b.generation;
-})
-
-
+//   // por em ordem alfabetica
+//   const systemsGroups = systemsByGen?.sort((a:any,b:any)=>{
+//     return a.generation - b.generation;
+// })
 
 
-// const loading = false;
-// const systemsGroups = [
-//   {generation:4, systems:[
-//     {name:'snes',developer: 'nintendo',generation:4, slug: 'nintendo-snes'},
-//     {name:'mega drive',developer: 'sega',generation:4, slug: 'sega-mega-drive'},
-//     ]},
-//   {generation:3, systems:[
-//     {name:'nes',developer: 'nintendo',generation:3, slug: 'nintendo-nes'},
-//     {name:'master system',developer: 'sega',generation:3, slug: 'sega-master-system'},
-//     ]}
-//   ];
-
+  const loading = false;
+  const systemsGroups = systemsJson.map((item)=>{
+    return item
+  });
+  console.log(systemsGroups);
 
 
 
