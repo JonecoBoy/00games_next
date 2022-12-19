@@ -1,34 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+00GAMES
 
-## Getting Started
+## URLS em produção
 
-First, run the development server:
+Strapi:
 
-```bash
-npm run dev
-# or
-yarn dev
+[http://joneco.dev.br:1337/](http://joneco.dev.br:1337/)
+
+Aplicacao:
+[https://00games.com.br/](https://00games.com.br/)
+
+
+## Problemas
+
+Infelizmente o netlify depois de um tempo forçou um SSL no meu dominio privado,  e o meu strapi está em http, todas as fotos simplesmente não aparecem no site por isso. Precisarei criar um container do nginx para lidar com o ssl.
+como nesse exemplo: https://medium.com/@derrickmehaffy/using-strapi-in-production-with-https-717af82d1445
+e também não alocou os meus sistemas no menu, porém está funcional e da pra abrir as imagens em outra aba.
+
+Eu fiz a base de dados no mongo atlas, porem eu nao consegui de jeito nenhum mudar um parametro para colocar no nocector do mongo +srv, que e algum parametro do mongo. Simplesmente a imagem oficial do strapi nao deixa por esse parametro, tentei diversas formas e pesquisei e nada, logo perdi um bom tempo pois eu estava fazendo meu local todo nessa base. Criei uma base de mongo no meu servidor e pude de boa continnuar com o strapi, que tambem esta hospedado no meu servidor. porem, domingo vi que o prisma simplesmente nao funciona se o mongo nao tiver uma replica set... ele exige que seja possivel usar transaction, o mongo so aceita transactions se tiver replica set configurada pelo visto... por sorte a do mongo db atlas ja tem de natureza entao funcinou.
+logo a base de dados que esta configurada no .env
+```"mongodb+srv://client:nrPzxekxjFVtLIye@joneco.ch8krgj.mongodb.net/00games"```
+é a do mongo db atlas que ficara os usuarios (ai o +srv que informei), apesar de ter umas collections ai de sistemas jogos etc...
+
+## Rodar projeto dev
+
+rodar o projeto como dev está 100%, ou mesmo buildando o mesmo e dando start.
+
+no build já está rodando o prisma generate, porém no dev não, então rodar antes:
+```
+prisma generate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+yarn dev
+ ou
+ npm run dev
+ ```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+![My Account](/repository/assets/employee.png?raw=true "Employee Data title")
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+![Systems](/repository/public/employee.png?raw=true "Employee Data title")
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Login
+funcionando pereitamente local utilizando credentials ou google
 
-## Learn More
+## Área de Autorização
 
-To learn more about Next.js, take a look at the following resources:
+coloquei ao clicar na pagina de informacoes de qualquer jogo para só deixar se estiver logado, não era essa minha proposta inicial, mas serviu para adequar ao requerimento de autorização
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Base de Dados
+```
+Strapi:
+mongodb://joneco:nrPzxekxjFVtLIye@167.114.98.177:27017/00games
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+Usuarios (prisma):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+mongodb+srv://client:nrPzxekxjFVtLIye@joneco.ch8krgj.mongodb.net/00games
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+login do strapi passarei pelo teams
